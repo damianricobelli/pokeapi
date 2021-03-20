@@ -12,9 +12,14 @@ import {
   useColorModeValue
 } from "@chakra-ui/react"
 import SearchInput from "@components/ui/SearchInput"
+import { Alert as AlertError } from "@components/ui/Alert"
+import { SkeletonCard } from "@components/ui/Skeleton"
+import { useBottomScrollListener } from "react-bottom-scroll-listener"
 
 export default function Home() {
   const [items, setItems] = useState([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false)
   const [offsetValue, setOffsetValue] = useState<number>(0)
 
   useEffect(() => {
@@ -23,6 +28,7 @@ export default function Home() {
 
   const fetchMoreData = async () => {
     try {
+      setLoading(true)
       const url = "https://pokeapi.co/api/v2/pokemon"
       const response = await axios.get(url, {
         params: {
@@ -33,9 +39,29 @@ export default function Home() {
       const pokemons = response.data
       setItems([...items, ...pokemons.results.reverse()])
       setOffsetValue((prevValue) => prevValue + 10)
+      setLoading(false)
     } catch (error) {
-      console.log(error)
+      setLoading(false)
+      setError(true)
     }
+  }
+
+  useBottomScrollListener(fetchMoreData)
+
+  let content = null
+
+  if (items.length > 0) {
+    content = items.map(() => (
+      <Box key={uuid()} px={8} py={8}>
+        <Card />
+      </Box>
+    ))
+  } else {
+    content = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
+      <Box key={uuid()} px={8} py={8}>
+        <SkeletonCard />
+      </Box>
+    ))
   }
 
   return (
@@ -58,18 +84,13 @@ export default function Home() {
       </Container>
       <Stack as={Box} py={{ base: 10, md: 20 }}>
         <Flex
-          style={{ overflow: "hidden" }}
           px={{ base: 0, md: 20 }}
           wrap={"wrap"}
           direction={"row"}
           justify="center"
           align="center"
         >
-          {items.map(() => (
-            <Box key={uuid()} px={8} py={8}>
-              <Card />
-            </Box>
-          ))}
+          {error ? <AlertError /> : content}
         </Flex>
       </Stack>
     </>
