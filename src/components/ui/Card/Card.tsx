@@ -76,7 +76,7 @@ const Card: React.FC<CardProps> = ({}) => {
         <Button
           w={"full"}
           mt={8}
-          bg={useColorModeValue("#151f21", "gray.900")}
+          bg={useColorModeValue("#ff5000", "gray.900")}
           color={"white"}
           rounded={"md"}
           _hover={{
