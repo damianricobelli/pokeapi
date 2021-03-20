@@ -3,10 +3,41 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import Card from "@components/ui/Card"
 import uuid from "react-uuid"
-import { Container, Heading, Box, Stack, Flex } from "@chakra-ui/react"
+import {
+  Container,
+  Heading,
+  Box,
+  Stack,
+  Flex,
+  useColorModeValue
+} from "@chakra-ui/react"
 import SearchInput from "@components/ui/SearchInput"
 
 export default function Home() {
+  const [items, setItems] = useState([])
+  const [offsetValue, setOffsetValue] = useState<number>(0)
+
+  useEffect(() => {
+    fetchMoreData()
+  }, [])
+
+  const fetchMoreData = async () => {
+    try {
+      const url = "https://pokeapi.co/api/v2/pokemon"
+      const response = await axios.get(url, {
+        params: {
+          limit: 10,
+          offset: offsetValue
+        }
+      })
+      const pokemons = response.data
+      setItems([...items, ...pokemons.results.reverse()])
+      setOffsetValue((prevValue) => prevValue + 10)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -17,6 +48,7 @@ export default function Home() {
         <Stack as={Box} textAlign={"center"} py={{ base: 10, md: 20 }}>
           <Heading
             fontWeight={600}
+            color={useColorModeValue("#424242", "gray.300")}
             fontSize={{ base: "2xl", sm: "4xl", md: "5xl" }}
           >
             Encuentra tu Pokemón preferido
@@ -26,14 +58,15 @@ export default function Home() {
       </Container>
       <Stack as={Box} py={{ base: 10, md: 20 }}>
         <Flex
-          px={{ base: 0, md: 10 }}
+          style={{ overflow: "hidden" }}
+          px={{ base: 0, md: 20 }}
           wrap={"wrap"}
           direction={"row"}
           justify="center"
           align="center"
         >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(() => (
-            <Box key={uuid()} px={4} py={4}>
+          {items.map(() => (
+            <Box key={uuid()} px={8} py={8}>
               <Card />
             </Box>
           ))}
