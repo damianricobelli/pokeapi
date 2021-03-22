@@ -26,6 +26,14 @@ export default function Home() {
     fetchMoreData()
   }, [])
 
+  const getData = async (url: string) => {
+    const data = await axios.get(url)
+    return {
+      url: data.config,
+      data: data.data
+    } as const
+  }
+
   const fetchMoreData = async () => {
     try {
       setLoading(true)
@@ -36,10 +44,16 @@ export default function Home() {
           offset: offsetValue
         }
       })
-      const pokemons = response.data
-      setItems([...items, ...pokemons.results.reverse()])
+      const data = response.data.results.map((p: any) => getData(p.url))
+      let pokemons_promise = null
+      const pokemons = await Promise.allSettled(data).then((res) => {
+        pokemons_promise = res
+        return pokemons_promise
+      })
+      setItems([...items, ...pokemons])
       setOffsetValue((prevValue) => prevValue + 10)
       setLoading(false)
+      console.log(items)
     } catch (error) {
       setLoading(false)
       setError(true)
