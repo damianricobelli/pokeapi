@@ -30,7 +30,7 @@ export default function WithSubnavigation() {
             <Heading
               style={{ cursor: "pointer" }}
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              color={"#ff5000"}
+              color={useColorModeValue("#ff5000", "orange.500")}
               fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}
             >
               PokePlace

@@ -42,6 +42,7 @@ export default function Home() {
         </Box>
       ))
     } else {
+      console.log(data)
       return Object.keys(data).map((key) => {
         const filters = data[key].filter((el) => el.status === "fulfilled")
         return filters.map((el) => (
@@ -76,7 +77,7 @@ export default function Home() {
         >
           <SearchInput />
           <Button
-            bg={useColorModeValue("#ff5000", "gray.900")}
+            bg={useColorModeValue("#ff5000", "orange.500")}
             color={"white"}
             w={{ base: "full", sm: "10%" }}
             mt={{ base: 4, sm: 0 }}

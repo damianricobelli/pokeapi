@@ -36,7 +36,7 @@ const Card: React.FC<CardProps> = ({ content }) => {
           src={content.value.sprites.other.dream_world.front_default}
           alt={"Pokemon"}
           css={{
-            border: "2px solid white"
+            border: "2px solid gray"
           }}
         />
       </Flex>
@@ -50,6 +50,7 @@ const Card: React.FC<CardProps> = ({ content }) => {
           >
             {content.value.name}
           </Heading>
+          <Text color={"gray.500"}>EXP - {content.value.base_experience}</Text>
         </Stack>
 
         <Stack direction={"row"} justify={"center"} spacing={6}>
@@ -78,15 +79,16 @@ const Card: React.FC<CardProps> = ({ content }) => {
         <Button
           w={"full"}
           mt={8}
-          bg={useColorModeValue("#ff5000", "gray.900")}
+          bg={useColorModeValue("#ff5000", "orange.500")}
           color={"white"}
           rounded={"md"}
+          size={"md"}
           _hover={{
             transform: "translateY(-2px)",
             boxShadow: "lg"
           }}
         >
-          Ver más
+          + Info
         </Button>
       </Box>
     </Box>
