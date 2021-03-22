@@ -12,9 +12,18 @@ import {
   useColorModeValue
 } from "@chakra-ui/react"
 
-interface CardProps {}
+import { useColor } from "color-thief-react"
+interface CardProps {
+  content: any
+}
 
-const Card: React.FC<CardProps> = ({}) => {
+const Card: React.FC<CardProps> = ({ content }) => {
+  const { data, loading, error } = useColor(
+    content.value.sprites.other["official-artwork"].front_default,
+    "hex",
+    { crossOrigin: "Anonymous", quality: 100 }
+  )
+
   return (
     <Box
       maxW={"270px"}
@@ -29,20 +38,11 @@ const Card: React.FC<CardProps> = ({}) => {
         transform: "scale(1.1)"
       }}
     >
-      <Image
-        h={"120px"}
-        w={"full"}
-        src={
-          "https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
-        }
-        objectFit={"cover"}
-      />
+      <Box h={"60px"} w={"full"} bg={data} />
       <Flex justify={"center"} mt={-12}>
         <Avatar
-          size={"xl"}
-          src={
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-          }
+          size={"2xl"}
+          src={content.value.sprites.other.dream_world.front_default}
           alt={"Author"}
           css={{
             border: "2px solid white"
@@ -52,13 +52,26 @@ const Card: React.FC<CardProps> = ({}) => {
 
       <Box p={6}>
         <Stack spacing={0} align={"center"} mb={5}>
-          <Heading fontSize={"2xl"} fontWeight={500} fontFamily={"body"}>
-            John Doe
+          <Heading
+            fontSize={"2xl"}
+            textTransform={"capitalize"}
+            fontWeight={500}
+            fontFamily={"body"}
+          >
+            {content.value.name}
           </Heading>
           <Text color={"gray.500"}>Frontend Developer</Text>
         </Stack>
 
         <Stack direction={"row"} justify={"center"} spacing={6}>
+          <Stack spacing={0} align={"center"}>
+            <Text fontWeight={600} textTransform={"capitalize"}>
+              {content.value.stats[0].stat.name}
+            </Text>
+            <Text fontSize={"sm"} color={"gray.500"}>
+              {content.value.stats[0].base_stat}
+            </Text>
+          </Stack>
           <Stack spacing={0} align={"center"}>
             <Text fontWeight={600}>23k</Text>
             <Text fontSize={"sm"} color={"gray.500"}>

@@ -28,10 +28,7 @@ export default function Home() {
 
   const getData = async (url: string) => {
     const data = await axios.get(url)
-    return {
-      url: data.config,
-      data: data.data
-    } as const
+    return data.data
   }
 
   const fetchMoreData = async () => {
@@ -53,7 +50,6 @@ export default function Home() {
       setItems([...items, ...pokemons])
       setOffsetValue((prevValue) => prevValue + 10)
       setLoading(false)
-      console.log(items)
     } catch (error) {
       setLoading(false)
       setError(true)
@@ -65,9 +61,9 @@ export default function Home() {
   let content = null
 
   if (items.length > 0) {
-    content = items.map(() => (
+    content = items.map((el: any) => (
       <Box key={uuid()} px={8} py={8}>
-        <Card />
+        <Card content={el} />
       </Box>
     ))
   } else {
