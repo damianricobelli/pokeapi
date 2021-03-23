@@ -4,7 +4,7 @@ import {
   Heading,
   Avatar,
   Box,
-  Image,
+  Link,
   Flex,
   Text,
   Stack,
@@ -18,7 +18,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ content }) => {
   return (
     <Box
-      maxW={"270px"}
+      minW={"300px"}
       w={"full"}
       bg={useColorModeValue("white", "gray.700")}
       boxShadow={"2xl"}
@@ -75,21 +75,28 @@ const Card: React.FC<CardProps> = ({ content }) => {
             </Text>
           </Stack>
         </Stack>
-
-        <Button
-          w={"full"}
-          mt={8}
-          bg={useColorModeValue("#ff5000", "orange.500")}
-          color={"white"}
-          rounded={"md"}
-          size={"md"}
+        <Link
+          isExternal
           _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg"
+            textDecoration: "none"
           }}
+          href={`https://www.pokemon.com/es/pokedex/${content.value.name}`}
         >
-          + Info
-        </Button>
+          <Button
+            w={"full"}
+            mt={8}
+            bg={useColorModeValue("#ff5000", "orange.500")}
+            color={"white"}
+            rounded={"md"}
+            size={"md"}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg"
+            }}
+          >
+            + Info
+          </Button>
+        </Link>
       </Box>
     </Box>
   )
