@@ -18,7 +18,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ content }) => {
   return (
     <Box
-      minW={"300px"}
+      minW={{ base: "300px", sm: "270px" }}
       w={"full"}
       bg={useColorModeValue("white", "gray.700")}
       boxShadow={"2xl"}

@@ -82,6 +82,7 @@ export default function Home() {
             return getData(p.url)
         })
         const data = await Promise.allSettled(results)
+        console.log(data)
         setAllPokemons([data])
       } catch (error) {
         console.log(error)
@@ -143,7 +144,11 @@ export default function Home() {
           align="center"
           justify="space-around"
         >
-          <SearchInput value={searchValue} changed={setSearchValue} />
+          <SearchInput
+            value={searchValue}
+            allData={typeof allPokemons[0] === "undefined"}
+            changed={setSearchValue}
+          />
           <Button
             bg={useColorModeValue("#ff5000", "orange.500")}
             color={"white"}
@@ -156,7 +161,7 @@ export default function Home() {
               boxShadow: "lg"
             }}
           >
-            Filtrar
+            Filtros
           </Button>
         </Flex>
       </Container>

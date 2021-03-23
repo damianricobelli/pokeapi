@@ -3,8 +3,8 @@ import React from "react"
 import {
   Box,
   Flex,
-  Stack,
   Skeleton,
+  SkeletonText,
   SkeletonCircle,
   useColorModeValue
 } from "@chakra-ui/react"
@@ -12,7 +12,7 @@ import {
 export const SkeletonCard = ({}) => {
   return (
     <Box
-      w={"270px"}
+      w={{ base: "300px", sm: "270px" }}
       bg={useColorModeValue("white", "gray.800")}
       boxShadow={"2xl"}
       rounded={"md"}
@@ -23,10 +23,9 @@ export const SkeletonCard = ({}) => {
         transform: "scale(1.1)"
       }}
     >
-      <Skeleton h={"120px"} w={"full"} />
-      <Flex justify={"center"} mt={-12}>
+      <Flex justify={"center"} pt={6}>
         <SkeletonCircle
-          size={"90px"}
+          size={"140px"}
           css={{
             border: "2px solid white"
           }}
@@ -34,33 +33,8 @@ export const SkeletonCard = ({}) => {
       </Flex>
 
       <Box p={6}>
-        <Stack spacing={0} align={"center"} mb={5}>
-          <Skeleton height="20px" />
-          <Skeleton height="20px" />
-        </Stack>
-
-        <Stack direction={"row"} justify={"center"} spacing={6}>
-          <Stack spacing={0} align={"center"}>
-            <Skeleton height="20px" />
-            <Skeleton height="20px" />
-          </Stack>
-          <Stack spacing={0} align={"center"}>
-            <Skeleton height="20px" />
-            <Skeleton height="20px" />
-          </Stack>
-        </Stack>
-
-        <Skeleton
-          w={"full"}
-          mt={8}
-          bg={useColorModeValue("#151f21", "gray.900")}
-          color={"white"}
-          rounded={"md"}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg"
-          }}
-        ></Skeleton>
+        <SkeletonText mt="4" mb="8" noOfLines={4} spacing="4" />
+        <Skeleton height={"40px"} />
       </Box>
     </Box>
   )

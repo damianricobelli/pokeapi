@@ -2,7 +2,7 @@ import React from "react"
 import { GoSearch } from "react-icons/go"
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react"
 
-function SearchLocationInput({ value, changed }) {
+function SearchLocationInput({ value, changed, allData }) {
   return (
     <InputGroup w={{ base: "full", sm: "80%" }}>
       <InputLeftElement
@@ -12,7 +12,8 @@ function SearchLocationInput({ value, changed }) {
       <Input
         focusBorderColor="#ff5000"
         type="text"
-        placeholder="Buscar pokemón"
+        disabled={allData}
+        placeholder={allData ? "Cargando Pokédex..." : "Buscar Pokémon"}
         value={value}
         onChange={(e) => changed(e.target.value)}
       />

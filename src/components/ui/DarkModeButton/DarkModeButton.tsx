@@ -22,15 +22,15 @@ const DarkModeButton: FC = () => {
           icon={
             colorMode === "light" ? (
               <Image
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 src="/assets/img/snorlax.svg"
                 alt="Snorlax"
               />
             ) : (
               <Image
-                width={32}
-                height={32}
+                width={24}
+                height={24}
                 src="/assets/img/charmander.svg"
                 alt="Snorlax"
               />

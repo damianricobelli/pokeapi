@@ -7,13 +7,16 @@ import {
   useColorModeValue,
   Link as ChakraLink
 } from "@chakra-ui/react"
-import { AiOutlineHome, AiFillGithub } from "react-icons/ai"
+import { AiOutlineHome, AiFillGithub, AiOutlineSearch } from "react-icons/ai"
 import { BiDonateHeart } from "react-icons/bi"
 import DarkModeButton from "@components/ui/DarkModeButton"
 
 interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = ({}) => {
+  const handleTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
   return (
     <Box
       border={1}
@@ -30,10 +33,18 @@ const Footer: React.FC<FooterProps> = ({}) => {
             size="lg"
             variant={"outline"}
             border={"none"}
-            aria-label="Search database"
+            aria-label="Home"
             icon={<AiOutlineHome />}
           />
         </Link>
+        <IconButton
+          size="lg"
+          variant={"outline"}
+          border={"none"}
+          onClick={() => handleTop()}
+          aria-label="Search database"
+          icon={<AiOutlineSearch />}
+        />
         <Link href="/author">
           <IconButton
             size="lg"
