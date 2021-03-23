@@ -69,7 +69,7 @@ const DesktopNav = () => {
               _hover={{
                 textDecoration: "none"
               }}
-              href="https://github.com/damianricobelli/covid-19"
+              href="https://github.com/damianricobelli/pokeapi"
               color={useColorModeValue("gray.600", "gray.200")}
             >
               {navItem.label}
@@ -111,6 +111,6 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Repository",
-    href: "https://github.com/damianricobelli/weather-app"
+    href: "https://github.com/damianricobelli/pokeapi"
   }
 ]
