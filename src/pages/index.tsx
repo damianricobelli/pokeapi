@@ -20,6 +20,7 @@ import { Alert as AlertError, AlertNotFound } from "@components/ui/Alert"
 import Loader from "@components/ui/Loader"
 import { SkeletonCard } from "@components/ui/Skeleton"
 import { usePokemonData } from "@hooks/usePokemonData"
+import { useStorePokemon, useStoreFilterPokemon } from "@stores/useStorePokemon"
 
 const URL = "https://pokeapi.co/api/v2/pokemon/"
 
@@ -31,9 +32,12 @@ const getData = async (url: string) => {
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [searchValue, setSearchValue] = useState<string>("")
-  const [allPokemons, setAllPokemons] = useState([])
   const [pokemonsSearched, setPokemonsSearched] = useState(null)
   const [searchLoading, setSearchLoading] = useState<boolean>(false)
+
+  const { allPokemons, setAllPokemons } = useStorePokemon()
+
+  const { setTypes } = useStoreFilterPokemon()
 
   const {
     data,
@@ -83,17 +87,21 @@ export default function Home() {
         })
         const data = await Promise.allSettled(results)
         console.log(data)
-        setAllPokemons([data])
+        setAllPokemons(data)
+        setTypes(data)
       } catch (error) {
         console.log(error)
       }
     }
-    getPokemons()
+    if (!allPokemons) {
+      getPokemons()
+    }
   }, [])
 
   useEffect(() => {
     const getSearchResult = async (value: string) => {
-      const filtered = allPokemons[0].filter(
+      console.log(allPokemons)
+      const filtered = allPokemons.filter(
         (el: any) =>
           el.status === "fulfilled" && el.value && el.value.name.includes(value)
       )
@@ -146,7 +154,7 @@ export default function Home() {
         >
           <SearchInput
             value={searchValue}
-            allData={typeof allPokemons[0] === "undefined"}
+            allData={!allPokemons}
             changed={setSearchValue}
           />
           <Button
