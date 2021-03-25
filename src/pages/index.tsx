@@ -21,6 +21,7 @@ import Loader from "@components/ui/Loader"
 import { SkeletonCard } from "@components/ui/Skeleton"
 import { usePokemonData } from "@hooks/usePokemonData"
 import { useStorePokemon, useStoreFilterPokemon } from "@stores/useStorePokemon"
+import { checkFilters } from "@utils/functions"
 
 const URL = "https://pokeapi.co/api/v2/pokemon"
 const URL_SPECIES = "https://pokeapi.co/api/v2/pokemon-species"
@@ -32,26 +33,6 @@ const getData = async (url: string) => {
   return data.data
 }
 
-const checkElement = (el, filters) => {
-  let findAbilities = el.value.abilities.find(
-    (ab: any) => typeof filters.abilities[ab.ability.name] !== "undefined"
-  )
-  if (findAbilities !== undefined) {
-    return true
-  }
-  let findTypes = el.value.types.find(
-    (t: any) => typeof filters.types[t.type.name] !== "undefined"
-  )
-  if (findTypes !== undefined) {
-    return true
-  }
-  let findColor =
-    typeof filters.colors[el.value.specie_data.color.name] !== "undefined"
-  if (findColor !== undefined) {
-    return true
-  }
-  return false
-}
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [searchValue, setSearchValue] = useState<string>("")
@@ -65,6 +46,7 @@ export default function Home() {
     setAbilities,
     setHabitats,
     setColors,
+    setAllFilters,
     types,
     abilities,
     habitats,
@@ -112,7 +94,6 @@ export default function Home() {
         const results = await response.results.map((p: any) => getData(p.url))
         const data = await Promise.allSettled(results)
         setAllPokemons(data)
-        console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -150,9 +131,11 @@ export default function Home() {
     }
     const delayDebounceFn = setTimeout(() => {
       if (searchValue !== "") {
+        setAllFilters(false)
         getSearchResult(searchValue)
         setSearchLoading(false)
       } else {
+        setAllFilters(false)
         setSearchLoading(false)
       }
     }, 500)
@@ -163,17 +146,17 @@ export default function Home() {
     const getFilteredResult = async () => {
       const filtered = allPokemons.filter((el: any) => {
         if (el.status === "fulfilled" && el.value) {
-          const result = checkElement(el, filters)
+          const result = checkFilters(el, filters)
           if (result) return el
         }
       })
+      console.log(filtered)
       let searchFiltered = filtered.map((el) => (
         <Box key={uuid()} px={8} py={8}>
           <Card content={el} />
         </Box>
       ))
 
-      console.log(searchFiltered)
       if (searchFiltered.length === 0) {
         searchFiltered = <AlertNotFound />
       }
@@ -227,6 +210,8 @@ export default function Home() {
             w={{ base: "full", sm: "40" }}
             mt={{ base: 4, sm: 0 }}
             onClick={onOpen}
+            isLoading={!types && !abilities && !habitats && !colors}
+            loadingText="Filtros"
             disabled={
               types === false &&
               abilities === false &&
@@ -239,9 +224,7 @@ export default function Home() {
               boxShadow: "lg"
             }}
           >
-            {types && abilities && habitats && colors
-              ? "Filtros"
-              : "Cargando filtros..."}
+            Filtros
           </Button>
         </Flex>
       </Container>
@@ -264,7 +247,7 @@ export default function Home() {
         </Flex>
       </Stack>
       <Center>
-        {!searchLoading && searchValue === "" && (
+        {!searchLoading && searchValue === "" && !filters && (
           <Button
             disabled={isLoadingMore || isReachingEnd}
             mb={20}

@@ -20,7 +20,12 @@ export interface Item {
   value: string
 }
 
-export default function Home({ isOpen, onClose }) {
+interface HomeProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function Home({ isOpen, onClose }: HomeProps) {
   const {
     types,
     abilities,
@@ -96,7 +101,6 @@ export default function Home({ isOpen, onClose }) {
       habitats: keyBy(selectedHabitatItems, "value"),
       colors: keyBy(selectedColorItems, "value")
     }
-    console.log(data)
     setAllFilters(data)
   }
 

@@ -1,8 +1,14 @@
-import React from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import { GoSearch } from "react-icons/go"
 import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react"
 
-function SearchLocationInput({ value, changed, allData }) {
+interface SearchInput {
+  value: string
+  changed: Dispatch<SetStateAction<string>>
+  allData: any
+}
+
+function SearchInput({ value, changed, allData }: SearchInput) {
   return (
     <InputGroup w={{ base: "full", sm: "60%", md: "70%" }}>
       <InputLeftElement
@@ -21,4 +27,4 @@ function SearchLocationInput({ value, changed, allData }) {
   )
 }
 
-export default SearchLocationInput
+export default SearchInput

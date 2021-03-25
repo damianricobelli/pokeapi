@@ -3,16 +3,16 @@ import { capitalizeFirstLetter } from "@utils/functions"
 import axios from "axios"
 
 type PokemonStore = {
-  allPokemons: any
+  allPokemons: boolean | any
   setAllPokemons: (data: any) => void
 }
 
 type FilterStore = {
-  types: any
-  abilities: any
-  habitats: any
-  colors: any
-  filters: any
+  types: boolean | any
+  abilities: boolean | any
+  habitats: boolean | any
+  colors: boolean | any
+  filters: boolean | any
   setTypes: () => void
   setAbilities: () => void
   setHabitats: () => void
