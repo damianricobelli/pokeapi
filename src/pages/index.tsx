@@ -37,7 +37,17 @@ export default function Home() {
 
   const { allPokemons, setAllPokemons } = useStorePokemon()
 
-  const { setTypes } = useStoreFilterPokemon()
+  const {
+    setTypes,
+    setAbilities,
+    setHabitats,
+    setColors,
+    types,
+    abilities,
+    habitats,
+    colors,
+    filters
+  } = useStoreFilterPokemon()
 
   const {
     data,
@@ -76,31 +86,26 @@ export default function Home() {
         const response = await axios
           .get(URL, { params: { limit: 1118 } })
           .then((res) => res.data)
-        const results = await response.results.map((p: any) => {
-          const url = p.url.split("/")
-          if (
-            url[url.length - 2] !== "25" &&
-            url[url.length - 2] !== "519" &&
-            url[url.length - 2] !== "10036"
-          )
-            return getData(p.url)
-        })
+        const results = await response.results.map((p: any) => getData(p.url))
         const data = await Promise.allSettled(results)
-        console.log(data)
         setAllPokemons(data)
-        setTypes(data)
+        console.log(data)
       } catch (error) {
         console.log(error)
       }
     }
     if (!allPokemons) {
-      getPokemons()
+      getPokemons().then(() => {
+        setTypes()
+        setAbilities()
+        setHabitats()
+        setColors()
+      })
     }
   }, [])
 
   useEffect(() => {
     const getSearchResult = async (value: string) => {
-      console.log(allPokemons)
       const filtered = allPokemons.filter(
         (el: any) =>
           el.status === "fulfilled" && el.value && el.value.name.includes(value)
@@ -131,6 +136,35 @@ export default function Home() {
     return () => clearTimeout(delayDebounceFn)
   }, [searchValue])
 
+  useEffect(() => {
+    const getFilteredResult = async (value: string) => {
+      const filtered = allPokemons.filter((el: any) => {
+        if (el.status === "fulfilled" && el.value) {
+          el.value.abilities.find((ability) => {
+            let name = ability.ability.name
+          })
+        }
+      })
+      let searchFiltered = filtered.map((el) => (
+        <Box key={uuid()} px={8} py={8}>
+          <Card content={el} />
+        </Box>
+      ))
+      if (searchFiltered.length === 0) {
+        searchFiltered = <AlertNotFound />
+      }
+      setPokemonsSearched(searchFiltered)
+    }
+    if (searchValue === "") {
+      setPokemonsSearched(null)
+    } else {
+      setSearchLoading(true)
+    }
+    if (filters) {
+      console.log("changeee")
+    }
+  }, [filters])
+
   return (
     <>
       <Head>
@@ -160,16 +194,24 @@ export default function Home() {
           <Button
             bg={useColorModeValue("#ff5000", "orange.500")}
             color={"white"}
-            w={{ base: "full", sm: "20" }}
+            w={{ base: "full", sm: "40" }}
             mt={{ base: 4, sm: 0 }}
             onClick={onOpen}
+            disabled={
+              types === false &&
+              abilities === false &&
+              habitats === false &&
+              colors === false
+            }
             rounded={"md"}
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg"
             }}
           >
-            Filtros
+            {types && abilities && habitats && colors
+              ? "Filtros"
+              : "Cargando filtros..."}
           </Button>
         </Flex>
       </Container>
@@ -204,7 +246,9 @@ export default function Home() {
           </Button>
         )}
       </Center>
-      <Drawer isOpen={isOpen} onClose={onClose} />
+      {types && abilities && habitats && colors && (
+        <Drawer isOpen={isOpen} onClose={onClose} />
+      )}
     </>
   )
 }

@@ -4,7 +4,7 @@ import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react"
 
 function SearchLocationInput({ value, changed, allData }) {
   return (
-    <InputGroup w={{ base: "full", sm: "80%" }}>
+    <InputGroup w={{ base: "full", sm: "60%", md: "70%" }}>
       <InputLeftElement
         pointerEvents="none"
         children={<GoSearch color="#ff5000" />}

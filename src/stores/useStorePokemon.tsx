@@ -11,16 +11,22 @@ type FilterStore = {
   abilities: any
   habitats: any
   colors: any
-  setTypes: (data: any) => void
-  setAbilities: (data: any) => void
-  setHabitats: (data: any) => void
-  setColors: (data: any) => void
+  filters: any
+  setTypes: () => void
+  setAbilities: () => void
+  setHabitats: () => void
+  setColors: () => void
+  setAllFilters: (data: any) => void
 }
 
 const URL_ABILITY = "https://pokeapi.co/api/v2/ability?limit=327"
 const URL_TYPE = "https://pokeapi.co/api/v2/type"
 const URL_COLOR = "https://pokeapi.co/api/v2/pokemon-color"
 const URL_HABITAT = "https://pokeapi.co/api/v2/pokemon-habitat"
+
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
 
 export const useStorePokemon = create((set: SetState<PokemonStore>) => ({
   allPokemons: false,
@@ -34,44 +40,56 @@ export const useStoreFilterPokemon = create((set: SetState<FilterStore>) => ({
   abilities: false,
   habitats: false,
   colors: false,
-  setTypes: async (data) => {
+  filters: false,
+  setTypes: async () => {
     try {
       const response = await axios.get(URL_TYPE).then((res) => res.data)
-      console.log(response)
-      const types = response.results.map((type) => type.name)
+      const types = response.results.map((type) => ({
+        value: type.name,
+        label: capitalizeFirstLetter(type.name)
+      }))
       set({ types: types })
     } catch (error) {
       console.log(error)
     }
   },
-  setAbilities: async (data) => {
+  setAbilities: async () => {
     try {
       const response = await axios.get(URL_ABILITY).then((res) => res.data)
-      console.log(response)
-      const abilities = response.results.map((ability) => ability.name)
+      const abilities = response.results.map((ability) => ({
+        value: ability.name,
+        label: capitalizeFirstLetter(ability.name)
+      }))
       set({ abilities: abilities })
     } catch (error) {
       console.log(error)
     }
   },
-  setHabitats: async (data) => {
+  setHabitats: async () => {
     try {
       const response = await axios.get(URL_HABITAT).then((res) => res.data)
-      console.log(response)
-      const habitats = response.results.map((habitat) => habitat.name)
+      const habitats = response.results.map((habitat) => ({
+        value: habitat.name,
+        label: capitalizeFirstLetter(habitat.name)
+      }))
       set({ habitats: habitats })
     } catch (error) {
       console.log(error)
     }
   },
-  setColors: async (data) => {
+  setColors: async () => {
     try {
       const response = await axios.get(URL_COLOR).then((res) => res.data)
-      console.log(response)
-      const colors = response.results.map((color) => color.name)
+      const colors = response.results.map((color) => ({
+        value: color.name,
+        label: capitalizeFirstLetter(color.name)
+      }))
       set({ colors: colors })
     } catch (error) {
       console.log(error)
     }
+  },
+  setAllFilters: async (data) => {
+    set({ filters: data })
   }
 }))

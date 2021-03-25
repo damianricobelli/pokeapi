@@ -56,7 +56,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
         </Link>
         <ChakraLink
           isExternal
-          href={"https://github.com/damianricobelli/weather-app"}
+          href={"https://github.com/damianricobelli/pokeapi"}
         >
           <IconButton
             size="lg"
