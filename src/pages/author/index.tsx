@@ -14,9 +14,7 @@ import {
 
 import { AiFillGithub, AiFillLinkedin, AiOutlineTwitter } from "react-icons/ai"
 
-interface indexProps {}
-
-const index: React.FC<indexProps> = ({}) => {
+const index: React.FC = () => {
   return (
     <>
       <Head>

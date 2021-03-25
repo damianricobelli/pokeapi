@@ -3,7 +3,11 @@ import Navbar from "@components/common/Navbar"
 import Footer from "@components/common/Footer"
 import { Box, useColorModeValue } from "@chakra-ui/react"
 
-export const Layout: FC = ({ children }) => {
+interface LayoutProps {
+  pageProps: any
+}
+
+export const Layout: FC<LayoutProps> = ({ children, pageProps }) => {
   return (
     <>
       <Box>
