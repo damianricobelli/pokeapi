@@ -150,7 +150,6 @@ export default function Home() {
           if (result) return el
         }
       })
-      console.log(filtered)
       let searchFiltered = filtered.map((el) => (
         <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
           <Card content={el} />
