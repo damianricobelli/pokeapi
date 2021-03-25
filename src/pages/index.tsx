@@ -69,7 +69,7 @@ export default function Home() {
     }
     if (!data) {
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
-        <Box key={uuid()} px={8} py={8}>
+        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
           <SkeletonCard />
         </Box>
       ))
@@ -77,7 +77,7 @@ export default function Home() {
       return Object.keys(data).map((key) => {
         const filters = data[key].filter((el) => el.status === "fulfilled")
         return filters.map((el) => (
-          <Box key={uuid()} px={8} py={8}>
+          <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
             <Card content={el} />
           </Box>
         ))
@@ -115,7 +115,7 @@ export default function Home() {
           el.status === "fulfilled" && el.value && el.value.name.includes(value)
       )
       let searchFiltered = filtered.map((el) => (
-        <Box key={uuid()} px={8} py={8}>
+        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
           <Card content={el} />
         </Box>
       ))
@@ -152,7 +152,7 @@ export default function Home() {
       })
       console.log(filtered)
       let searchFiltered = filtered.map((el) => (
-        <Box key={uuid()} px={8} py={8}>
+        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
           <Card content={el} />
         </Box>
       ))
