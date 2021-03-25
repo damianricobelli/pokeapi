@@ -181,7 +181,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>PokePlace</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container maxW={"4xl"} px={10} pb={{ base: 10, sm: 10, md: 0 }}>

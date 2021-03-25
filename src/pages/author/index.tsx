@@ -1,3 +1,4 @@
+import Head from "next/head"
 import Image from "next/image"
 import {
   Button,
@@ -18,6 +19,10 @@ interface indexProps {}
 const index: React.FC<indexProps> = ({}) => {
   return (
     <>
+      <Head>
+        <title>Author</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Container bg={useColorModeValue("#F9F9F9", "gray.800")} maxW={"100%"}>
         <Stack
           py={{ base: 12, md: 24 }}
