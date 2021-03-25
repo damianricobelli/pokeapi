@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import {
   Flex,
   IconButton,
@@ -14,8 +15,15 @@ import DarkModeButton from "@components/ui/DarkModeButton"
 interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = ({}) => {
+  const router = useRouter()
+  console.log(router)
+  console.log(router.pathname)
   const handleTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+    if (router.pathname !== "/") {
+      router.push("/")
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
   }
   return (
     <Box
