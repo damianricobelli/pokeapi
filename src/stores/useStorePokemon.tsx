@@ -1,4 +1,5 @@
 import create, { SetState } from "zustand"
+import { capitalizeFirstLetter } from "@utils/functions"
 import axios from "axios"
 
 type PokemonStore = {
@@ -23,10 +24,6 @@ const URL_ABILITY = "https://pokeapi.co/api/v2/ability?limit=327"
 const URL_TYPE = "https://pokeapi.co/api/v2/type"
 const URL_COLOR = "https://pokeapi.co/api/v2/pokemon-color"
 const URL_HABITAT = "https://pokeapi.co/api/v2/pokemon-habitat"
-
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
 
 export const useStorePokemon = create((set: SetState<PokemonStore>) => ({
   allPokemons: false,

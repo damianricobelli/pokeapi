@@ -22,13 +22,36 @@ import { SkeletonCard } from "@components/ui/Skeleton"
 import { usePokemonData } from "@hooks/usePokemonData"
 import { useStorePokemon, useStoreFilterPokemon } from "@stores/useStorePokemon"
 
-const URL = "https://pokeapi.co/api/v2/pokemon/"
+const URL = "https://pokeapi.co/api/v2/pokemon"
+const URL_SPECIES = "https://pokeapi.co/api/v2/pokemon-species"
 
 const getData = async (url: string) => {
-  const data = await axios.get(url)
+  const specie = await axios.get(url)
+  const data = await axios.get(`${URL}/${specie.data.id}`)
+  data.data.specie_data = specie.data
   return data.data
 }
 
+const checkElement = (el, filters) => {
+  let findAbilities = el.value.abilities.find(
+    (ab: any) => typeof filters.abilities[ab.ability.name] !== "undefined"
+  )
+  if (findAbilities !== undefined) {
+    return true
+  }
+  let findTypes = el.value.types.find(
+    (t: any) => typeof filters.types[t.type.name] !== "undefined"
+  )
+  if (findTypes !== undefined) {
+    return true
+  }
+  let findColor =
+    typeof filters.colors[el.value.specie_data.color.name] !== "undefined"
+  if (findColor !== undefined) {
+    return true
+  }
+  return false
+}
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [searchValue, setSearchValue] = useState<string>("")
@@ -84,7 +107,7 @@ export default function Home() {
     const getPokemons = async () => {
       try {
         const response = await axios
-          .get(URL, { params: { limit: 1118 } })
+          .get(URL_SPECIES, { params: { limit: 898 } })
           .then((res) => res.data)
         const results = await response.results.map((p: any) => getData(p.url))
         const data = await Promise.allSettled(results)
@@ -137,12 +160,11 @@ export default function Home() {
   }, [searchValue])
 
   useEffect(() => {
-    const getFilteredResult = async (value: string) => {
+    const getFilteredResult = async () => {
       const filtered = allPokemons.filter((el: any) => {
         if (el.status === "fulfilled" && el.value) {
-          el.value.abilities.find((ability) => {
-            let name = ability.ability.name
-          })
+          const result = checkElement(el, filters)
+          if (result) return el
         }
       })
       let searchFiltered = filtered.map((el) => (
@@ -150,19 +172,27 @@ export default function Home() {
           <Card content={el} />
         </Box>
       ))
+
+      console.log(searchFiltered)
       if (searchFiltered.length === 0) {
         searchFiltered = <AlertNotFound />
       }
       setPokemonsSearched(searchFiltered)
     }
-    if (searchValue === "") {
+    if (!filters) {
       setPokemonsSearched(null)
     } else {
       setSearchLoading(true)
     }
-    if (filters) {
-      console.log("changeee")
-    }
+    const delayDebounceFn = setTimeout(() => {
+      if (filters) {
+        getFilteredResult()
+        setSearchLoading(false)
+      } else {
+        setSearchLoading(false)
+      }
+    }, 10)
+    return () => clearTimeout(delayDebounceFn)
   }, [filters])
 
   return (
@@ -225,7 +255,8 @@ export default function Home() {
         >
           {searchLoading ? (
             <Loader />
-          ) : pokemonsSearched && searchValue !== "" ? (
+          ) : (pokemonsSearched && filters) ||
+            (pokemonsSearched && searchValue !== "") ? (
             pokemonsSearched
           ) : (
             content

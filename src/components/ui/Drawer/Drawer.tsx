@@ -14,7 +14,7 @@ import {
 import React from "react"
 import { CUIAutoComplete } from "chakra-ui-autocomplete"
 import { useStoreFilterPokemon } from "@stores/useStorePokemon"
-
+import { keyBy } from "@utils/functions"
 export interface Item {
   label: string
   value: string
@@ -91,11 +91,12 @@ export default function Home({ isOpen, onClose }) {
 
   const handleSetFilters = () => {
     const data = {
-      types: selectedTypeItems,
-      abilities: selectedAbilityItems,
-      habitats: selectedHabitatItems,
-      colors: selectedColorItems
+      types: keyBy(selectedTypeItems, "value"),
+      abilities: keyBy(selectedAbilityItems, "value"),
+      habitats: keyBy(selectedHabitatItems, "value"),
+      colors: keyBy(selectedColorItems, "value")
     }
+    console.log(data)
     setAllFilters(data)
   }
 
