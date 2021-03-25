@@ -69,7 +69,7 @@ export default function Home() {
     }
     if (!data) {
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => (
-        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
+        <Box key={uuid()} px={8} py={8}>
           <SkeletonCard />
         </Box>
       ))
@@ -77,7 +77,7 @@ export default function Home() {
       return Object.keys(data).map((key) => {
         const filters = data[key].filter((el) => el.status === "fulfilled")
         return filters.map((el) => (
-          <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
+          <Box key={uuid()} px={8} py={8}>
             <Card content={el} />
           </Box>
         ))
@@ -115,7 +115,7 @@ export default function Home() {
           el.status === "fulfilled" && el.value && el.value.name.includes(value)
       )
       let searchFiltered = filtered.map((el) => (
-        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
+        <Box key={uuid()} px={8} py={8}>
           <Card content={el} />
         </Box>
       ))
@@ -151,7 +151,7 @@ export default function Home() {
         }
       })
       let searchFiltered = filtered.map((el) => (
-        <Box key={uuid()} px={8} py={8} mb={{ base: 28, md: 0 }}>
+        <Box key={uuid()} px={8} py={8}>
           <Card content={el} />
         </Box>
       ))
@@ -227,7 +227,7 @@ export default function Home() {
           </Button>
         </Flex>
       </Container>
-      <Stack as={Box} py={{ base: 0, md: 10 }}>
+      <Stack as={Box}>
         <Flex
           px={{ base: 0, md: 20 }}
           wrap={"wrap"}
@@ -245,7 +245,7 @@ export default function Home() {
           )}
         </Flex>
       </Stack>
-      <Center>
+      <Center py={{ base: 10, sm: 0 }}>
         {!searchLoading && searchValue === "" && !filters && (
           <Button
             disabled={isLoadingMore || isReachingEnd}
