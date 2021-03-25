@@ -16,8 +16,6 @@ interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = ({}) => {
   const router = useRouter()
-  console.log(router)
-  console.log(router.pathname)
   const handleTop = () => {
     if (router.pathname !== "/") {
       router.push("/")
