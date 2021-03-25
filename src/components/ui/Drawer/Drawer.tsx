@@ -2,6 +2,7 @@ import {
   Box,
   Stack,
   Button,
+  Text,
   Drawer,
   DrawerOverlay,
   DrawerContent,
@@ -9,7 +10,8 @@ import {
   DrawerHeader,
   DrawerBody,
   DrawerFooter,
-  useColorModeValue
+  useColorModeValue,
+  useBreakpointValue
 } from "@chakra-ui/react"
 import React from "react"
 import { CUIAutoComplete } from "chakra-ui-autocomplete"
@@ -95,17 +97,31 @@ export default function Home({ isOpen, onClose }: HomeProps) {
   }
 
   const handleSetFilters = () => {
-    const data = {
-      types: keyBy(selectedTypeItems, "value"),
-      abilities: keyBy(selectedAbilityItems, "value"),
-      habitats: keyBy(selectedHabitatItems, "value"),
-      colors: keyBy(selectedColorItems, "value")
+    if (
+      selectedAbilityItems.length === 0 &&
+      selectedAbilityItems.length === 0 &&
+      selectedHabitatItems.length === 0 &&
+      selectedColorItems.length === 0
+    ) {
+      onClose()
+    } else {
+      const data = {
+        types: keyBy(selectedTypeItems, "value"),
+        abilities: keyBy(selectedAbilityItems, "value"),
+        habitats: keyBy(selectedHabitatItems, "value"),
+        colors: keyBy(selectedColorItems, "value")
+      }
+      setAllFilters(data)
     }
-    setAllFilters(data)
   }
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={"sm"}>
+    <Drawer
+      isOpen={isOpen}
+      placement="right"
+      onClose={onClose}
+      size={useBreakpointValue({ base: "full", sm: "sm" })}
+    >
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />
@@ -189,7 +205,10 @@ export default function Home({ isOpen, onClose }: HomeProps) {
               </Box>
             </Stack>
           </DrawerBody>
-
+          <Text fontSize="sm" px={6} py={4}>
+            Una vez aplicados los filtros, cierra el panel para ver los
+            resultados
+          </Text>
           <DrawerFooter borderTopWidth="1px">
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancelar
