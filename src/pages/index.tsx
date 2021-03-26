@@ -112,7 +112,9 @@ export default function Home() {
     const getSearchResult = async (value: string) => {
       const filtered = allPokemons.filter(
         (el: any) =>
-          el.status === "fulfilled" && el.value && el.value.name.includes(value)
+          el.status === "fulfilled" &&
+          el.value &&
+          el.value.name.includes(value.toLowerCase())
       )
       let searchFiltered = filtered.map((el) => (
         <Box key={uuid()} px={8} py={8}>
